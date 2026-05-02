@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Verify Email - MindCare AI</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <style>
+    .auth-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1;}
+    .auth-card { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 2.5rem; max-width: 450px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; }
+    .auth-input { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 1rem; border-radius: 12px; width: 100%; font-size: 1.5rem; letter-spacing: 0.5rem; text-align: center; margin-bottom: 1.2rem; transition: all 0.3s; font-family: var(--font-head); font-weight: 600; }
+    .auth-input:focus { outline: none; border-color: var(--primary); background: rgba(255,255,255,0.09); box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
+    .auth-input::placeholder { color: var(--text-muted); font-size: 1rem; letter-spacing: normal; font-weight: normal; }
+    .auth-label { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.4rem; display: block; font-weight: 500;}
+  </style>
+</head>
+<body>
+  <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
+
+  <div class="container auth-container">
+    <div class="auth-card">
+      <div class="mb-4">
+        <div class="brand-icon mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.8rem;">
+          <i class="bi bi-envelope-check-fill"></i>
+        </div>
+        <h2 class="brand-name fs-4">Verify Your Email</h2>
+        <p class="text-muted small">We sent a 4-digit code to <br><b class="text-primary-light">{{ email }}</b></p>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert" style="background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); color: #fca5a5; font-size: 0.9rem;">
+              {{ message }}
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <form method="POST" action="/verify">
+        <div>
+          <input type="text" name="otp" class="auth-input" placeholder="0000" maxlength="4" required autofocus autocomplete="off">
+        </div>
+        <button type="submit" class="btn-analyze w-100">Verify & Continue</button>
+      </form>
+      
+      <div class="mt-4 text-start">
+        <p class="auth-label"><i class="bi bi-info-circle me-1"></i> Check your spam folder if you don't see the email.</p>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
